@@ -1,0 +1,94 @@
+<div class="card-columns">
+  <div class="card bg-warning " style="height: 370px; width: 300px; "*ngFor="let movie of movies;">
+    <div class="card-body ">
+      <h4 class="card-title">{{movie.name}}</h4>
+      <img src="{{movie.imageUrl}}" alt="movie.imageUrl" style="height: 250px; width: 100%;">
+      <button  class="btn btn-primary" style="margin:5px 5px 5px 5px" *ngFor="let theater of movie.theaters;" (click)="selectTheater(movie.name,theater.name)">
+        {{theater.name}}</button>
+    </div>
+  </div>
+</div>
+
+
+<!-- select seat modal -->
+<button type="button" id="showtime" class="btn btn-secondary" data-toggle="modal" data-target="#showModal"
+  hidden></button>
+
+
+<div id="showModal" class="modal fade" role="dialog">
+  <div class="modal-dialog">
+    <!-- Modal content-->
+    <div class="modal-content">
+      <div class="modal-header">
+        <button *ngFor="let show of shows;"
+          (click)="showSeats(show.start_time,show.end_time)">{{show.start_time}}-{{show.end_time}}</button>
+        <button type="button" id="close" class="close" data-dismiss="modal">&times;</button>
+
+      </div>
+      <div class="modal-body ">
+        <div class="btn-group btn-group-toggle"  data-toggle="buttons">
+          <label class="btn " *ngFor="let seat of seats;"
+            [ngClass]="(seat.status=='occupied')?'btn btn-danger':'btn btn-success'">
+            <input type="checkbox" [disabled]="seat.status=='occupied'" value="{{seat.number}}" autocomplete="off">
+            {{seat.number}}
+          </label>
+        </div>
+      </div>
+      <div class="modal-footer">
+        <button type="button" class="btn btn-secondary " data-dismiss="modal" (click)="bookTicket()">Book</button>
+        <button type="button" class="btn btn-default" data-dismiss="modal">Cancel</button>
+      </div>
+    </div>
+
+  </div>
+</div>
+
+
+
+<button type="button" id="confirmation" class="btn btn-secondary" data-toggle="modal" data-target="#confirmationModal"
+  hidden></button>
+
+
+<div id="confirmationModal" class="modal fade" role="dialog">
+  <div class="modal-dialog">
+    <!-- Modal content-->
+    <div class="modal-content">
+      <div class="modal-header">
+        <label for="ticketBooked"> Ticket Booked Successfully</label>
+        <button type="button" id="close" class="close" data-dismiss="modal">&times;</button>
+
+      </div>
+      <div class="modal-body " id="printableArea">
+        <div class="container-fluid">
+          <div class="row">
+            <div class="col-lg-6">Customer:</div>
+            <div class="col-lg-6">{{user}}</div>
+          </div>
+          <div class="row">
+            <div class="col-lg-6">Movie:</div>
+            <div class="col-lg-6">{{ticket.movieName}}</div>
+          </div>
+          <div class="row">
+            <div class="col-lg-6">Theater:</div>
+            <div class="col-lg-6">{{ticket.theater}}</div>
+          </div>
+          <div class="row">
+            <div class="col-lg-6">Timing:</div>
+            <div class="col-lg-6">{{ticket.show}}</div>
+          </div>
+          <div class="row">
+            <div class="col-lg-6">Seats:</div>
+            <div class="col-lg-6">
+              <label for="sit" style="margin-right :5px;" *ngFor="let a of ticket.seats">{{a}}</label>
+            </div>
+          </div>
+        </div>
+      </div>
+      <div class="modal-footer">
+        <button type="button" class="btn btn-secondary " data-dismiss="modal" (click)="printTicket('printableArea')">Print</button>
+        <button type="button" class="btn btn-default" data-dismiss="modal">Cancel</button>
+      </div>
+    </div>
+
+  </div>
+</div>
